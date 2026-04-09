@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -17,13 +18,27 @@ export function ProtectedShell({ children, title, subtitle }: { children: ReactN
     }
   }, [auth.user, isReady, router]);
 
-  if (!isReady || !auth.user) {
+  if (!isReady) {
     return (
       <div className="centered-screen">
         <div className="panel loading-panel">
           <div className="pulse-orb" />
           <h1>Préparation de votre espace</h1>
           <p>Chargement du tableau de bord et des données locales.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!auth.user) {
+    return (
+      <div className="centered-screen">
+        <div className="panel loading-panel">
+          <h1>Session introuvable</h1>
+          <p>Redirection vers la connexion. Si rien ne se passe, ouvrez directement la page d’authentification.</p>
+          <Link href="/auth" className="primary-button">
+            Aller a la connexion
+          </Link>
         </div>
       </div>
     );
